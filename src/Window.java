@@ -9,7 +9,7 @@ public class Window extends JFrame {
     static long frameTime = System.nanoTime();
     static float bombX = 0;
     static float bombY = 0;
-    static int bombV = 540;
+    static float bombV = 270;
 
     public static void main(String[] args) throws IOException {
 
@@ -37,9 +37,65 @@ public class Window extends JFrame {
         long currentTime = System.nanoTime();
         float deltaTime = (currentTime - frameTime) * 0.000000001f;
         frameTime = currentTime;
+        boolean left = true;
+        boolean right = true;
 
 
-            if (bombY < dimension.height - bomb.getHeight(null) && bombX <= 0) {
+
+
+        if (bombX <= dimension.width / 4 - bomb.getWidth(null) / 4  ) {
+
+            bombX = (float) (bombX + 0.5 * bombV * deltaTime);
+            bombY = (bombY + bombV * deltaTime);
+            g.drawImage(bomb, (int) bombX, (int) bombY, null);
+        }
+
+        if (bombX >= dimension.width / 4 - bomb.getWidth(null) / 4 &&
+                bombX <= dimension.width * 3 / 4 - bomb.getWidth(null) / 4  ) {
+
+            bombX = (bombX + bombV * deltaTime);
+            bombY = (bombY - bombV * deltaTime);
+            g.drawImage(bomb, (int) bombX, (int) bombY, null);
+        }
+
+        if (bombX >= dimension.width * 3 / 4 - bomb.getWidth(null) / 4 &&
+                bombX <= dimension.width - bomb.getWidth(null) &&
+                bombY < dimension.height/2 - bomb.getHeight(null)/2 ) {
+
+            bombX = (float) (bombX + 0.5 * bombV * deltaTime);
+            bombY = (bombY + bombV * deltaTime);
+            g.drawImage(bomb, (int) bombX, (int) bombY, null);
+        }
+
+        if (bombX >= dimension.width / 2 - bomb.getWidth(null) / 4 &&
+                   bombY >= dimension.height/2 - bomb.getHeight(null)/2 ) {
+
+            bombX = (float) (bombX - 0.5 * bombV * deltaTime);
+            bombY = (bombY +  bombV * deltaTime);
+            g.drawImage(bomb, (int) bombX, (int) bombY, null);
+        }
+
+        if (bombX <= dimension.width * 3 / 4 - bomb.getWidth(null) / 4 ){
+            bombX = (bombX - bombV * deltaTime);
+            bombY = (bombY - bombV * deltaTime);
+            g.drawImage(bomb, (int) bombX, (int) bombY, null);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           /* if (bombY < dimension.height - bomb.getHeight(null) && bombX <= 0) {
                 bombY = (bombY + bombV * deltaTime);
                 g.drawImage(bomb, (int) bombX, (int) bombY, null);
             } else if (bombY >= dimension.height - bomb.getHeight(null) && bombX < dimension.width - bomb.getWidth(null)) {
@@ -52,21 +108,7 @@ public class Window extends JFrame {
                 bombX = (bombX - bombV * deltaTime);
                 g.drawImage(bomb, (int) bombX, (int) bombY, null);
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* bombX =  (bombX + bombV*deltaTime);
+         bombX =  (bombX + bombV*deltaTime);
         bombY =  (bombY + bombV*deltaTime / 2);
         g.drawImage(bomb,(int)bombX,(int)bombY,null);
 
@@ -84,8 +126,8 @@ public class Window extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-                Window.move(g);
-                repaint();
+            Window.move(g);
+            repaint();
 
 
         }
