@@ -9,7 +9,7 @@ public class Window extends JFrame {
     static long frameTime = System.nanoTime();
     static float bombX = 0;
     static float bombY = 0;
-    static int bombV = 150;
+    static int bombV = 540;
 
     public static void main(String[] args) throws IOException {
 
@@ -18,7 +18,6 @@ public class Window extends JFrame {
         GameField gameField = new GameField();
         window.add(gameField);
         window.setVisible(true);
-
 
 
     }
@@ -33,20 +32,48 @@ public class Window extends JFrame {
 
     }
 
-    private static void Move(Graphics g) {
+    private static void move(Graphics g) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         long currentTime = System.nanoTime();
         float deltaTime = (currentTime - frameTime) * 0.000000001f;
         frameTime = currentTime;
 
-        bombX =  (bombX + bombV*deltaTime);
+
+            if (bombY < dimension.height - bomb.getHeight(null) && bombX <= 0) {
+                bombY = (bombY + bombV * deltaTime);
+                g.drawImage(bomb, (int) bombX, (int) bombY, null);
+            } else if (bombY >= dimension.height - bomb.getHeight(null) && bombX < dimension.width - bomb.getWidth(null)) {
+                bombX = (bombX + bombV * deltaTime);
+                g.drawImage(bomb, (int) bombX, (int) bombY, null);
+            } else if (bombY > 0 && bombX > dimension.width - bomb.getWidth(null)) {
+                bombY = (bombY - bombV * deltaTime);
+                g.drawImage(bomb, (int) bombX, (int) bombY, null);
+            } else if (bombX > 0 && bombY <= 0) {
+                bombX = (bombX - bombV * deltaTime);
+                g.drawImage(bomb, (int) bombX, (int) bombY, null);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* bombX =  (bombX + bombV*deltaTime);
         bombY =  (bombY + bombV*deltaTime / 2);
         g.drawImage(bomb,(int)bombX,(int)bombY,null);
 
         if (bombX > dimension.width || bombY > dimension.height){
             bombX = -250;
             bombY = -250;
-        }
+        }*/
 
 
     }
@@ -56,8 +83,11 @@ public class Window extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Move(g);
-            repaint();
+
+                Window.move(g);
+                repaint();
+
+
         }
     }
 }
