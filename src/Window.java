@@ -5,11 +5,12 @@ import java.io.IOException;
 
 public class Window extends JFrame {
     static Image bomb;
+    static Image boom;
     static Window window = new Window();
     static long frameTime = System.nanoTime();
     static float bombX = 0;
     static float bombY = 0;
-    static float bombV = 540;
+    static float bombV = 800;
     static boolean left;
     static boolean right;
 
@@ -17,6 +18,7 @@ public class Window extends JFrame {
 
         initFrame();
         bomb = ImageIO.read(Window.class.getResourceAsStream("icon.png"));
+        boom = ImageIO.read(Window.class.getResourceAsStream("boom.jpg"));
         GameField gameField = new GameField();
         window.add(gameField);
         window.setVisible(true);
@@ -44,7 +46,7 @@ public class Window extends JFrame {
         if (bombX <= 0) {
             right = true;
             left = false;
-        } else if (bombX >= dimension.width - bomb.getWidth(null) / 3) {
+        } else if (bombX >= dimension.width - bomb.getWidth(null)) {
             right = false;
             left = true;
         }
@@ -55,13 +57,21 @@ public class Window extends JFrame {
             bombX = (float) (bombX + 0.25 * bombV * deltaTime);
             bombY = (bombY + bombV * deltaTime);
             g.drawImage(bomb, (int) bombX, (int) bombY, null);
+
+            if (bombY >= dimension.height  - bomb.getWidth(null))
+                g.drawImage(boom, (int) bombX, (int) bombY,null);
         }
         if (bombX >= dimension.width / 4 - bomb.getWidth(null) &&
                 bombX <= dimension.width * 3 / 4 - bomb.getWidth(null) && right) {
 
             bombX = (bombX + bombV * deltaTime);
             bombY = (bombY - bombV * deltaTime);
+
             g.drawImage(bomb, (int) bombX, (int) bombY, null);
+            if (bombY <= dimension.height / 4 - bomb.getWidth(null))
+                g.drawImage(boom, (int) bombX, (int) bombY,null);
+
+
         }
 
         if (bombX >= dimension.width * 3 / 4 - bomb.getWidth(null) &&
@@ -71,19 +81,28 @@ public class Window extends JFrame {
             bombX = (float) (bombX + 0.75 * bombV * deltaTime);
             bombY = (float) (bombY +  bombV * deltaTime);
             g.drawImage(bomb, (int) bombX, (int) bombY, null);
+
+            if (bombX >= dimension.width - bomb.getWidth(null) * 6 / 4)
+                g.drawImage(boom, (int) bombX, (int) bombY,null);
         }
 
-        if (bombX >= dimension.width * 3 / 4 - bomb.getWidth(null) && left) {
+        if (bombX >= dimension.width * 3 / 4 - bomb.getWidth(null)/4 && left) {
 
             bombX = (bombX - bombV * deltaTime);
             bombY = (bombY + bombV * deltaTime);
             g.drawImage(bomb, (int) bombX, (int) bombY, null);
+
+            if (bombY >= dimension.height * 3 / 4 - bomb.getWidth(null)/4)
+                g.drawImage(boom, (int) bombX, (int) bombY,null);
         }
-        if (bombX <= dimension.width * 3 / 4 - bomb.getWidth(null) && left) {
+
+        if (bombX <= dimension.width * 3 / 4 - bomb.getWidth(null)/4 && left) {
 
             bombX = (bombX - bombV * deltaTime);
-            bombY = (float) (bombY - 0.6 * bombV * deltaTime);
+            bombY = (float) (bombY - 0.65 * bombV * deltaTime);
             g.drawImage(bomb, (int) bombX, (int) bombY, null);
+            if (bombX <= 0 + bomb.getWidth(null)/4)
+                g.drawImage(boom, (int) bombX, (int) bombY,null);
         }
 
 
